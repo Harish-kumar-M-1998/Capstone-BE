@@ -16,12 +16,13 @@ const cleaningServiceRoutes = require('./routes/cleaningserviceroute');
 const userroutes = require('./routes/userroutes');
 const userdataroutes = require ('./routes/userdataroute')
 const quoteroute =require('./routes/quote')
+const ratingroute =require('./routes/rating&review')
 
 app.use('/api/cleaningservices', cleaningServiceRoutes);
 app.use('/api/users',userroutes)
 app.use('/api/userdata', userdataroutes)
 app.use('/api/quote',quoteroute)
-
+app.use('/api/rating',ratingroute)
 
 // Error handling middleware
 app.use((err, req, res, next) => {
