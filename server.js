@@ -17,12 +17,19 @@ const userroutes = require('./routes/userroutes');
 const userdataroutes = require ('./routes/userdataroute')
 const quoteroute =require('./routes/quote')
 const ratingroute =require('./routes/rating&review')
+const bookingroute = require('./routes/bookinroutes')
+const checklistroute = require('./routes/checklistroute')
+
 
 app.use('/api/cleaningservices', cleaningServiceRoutes);
 app.use('/api/users',userroutes)
 app.use('/api/userdata', userdataroutes)
 app.use('/api/quote',quoteroute)
 app.use('/api/rating',ratingroute)
+app.use('/api/bookings',bookingroute)
+app.use('/api/checklists', checklistroute)
+
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
