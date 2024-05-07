@@ -10,5 +10,5 @@ const cleaningServiceSchema = new mongoose.Schema({
   description: { type: String },
 });
 
-const cleaningmodel = mongoose.model('cleaningservices', cleaningServiceSchema);
- module.exports = cleaningmodel
+const cleaningservices = mongoose.model('cleaningservices', cleaningServiceSchema);
+ module.exports = cleaningservices

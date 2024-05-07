@@ -5,6 +5,16 @@ const router = express.Router();
 // Import User model
 const User = require('../models/user');
 
+
+router.get('/users', async (req, res) => {
+    try {
+      const users = await User.find();
+      res.json(users);
+    } catch (error) {
+      console.error('Error retrieving users:', error);
+      res.status(500).json({ error: 'Error retrieving users' });
+    }
+  });
 // Route for user registration
 router.post('/register', async (req, res) => {
     try {
@@ -56,8 +66,8 @@ router.post('/login', async (req, res) => {
 
         // If user and password are correct, send success response along with user information
         res.status(200).json({ 
-            
-            
+                isAdmin: user.isAdmin,
+                 _id: user._id,
                 username: user.username,
                 email: user.email
                 // Add any other user information you need here
@@ -68,7 +78,31 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-
+ 
+router.put('/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      // Update user's role to admin
+      await User.findByIdAndUpdate(userId, { isAdmin: true });
+      res.status(200).json({ message: 'User updated to admin successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
+  
+  // Delete user
+  router.delete('/:userId', async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      // Delete user from the database
+      await User.findByIdAndDelete(userId);
+      res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
 
 module.exports = router;
