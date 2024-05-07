@@ -9,32 +9,11 @@ const fs = require('fs');
 
 
 
-const createUploadsDir = () => {
-  const uploadDir = 'uploads/';
-  if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir);
-  }
-};
-
-// Middleware to handle file uploads
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: function (req, file, cb) {
-      createUploadsDir(); // Ensure upload directory exists
-      cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-      cb(null, new Date().toISOString() + path.extname(file.originalname));
-    }
-  })
-});
-
-// Route to add a new cleaning service
-router.post('/addCleaningService', upload.single('image'), async (req, res) => {
+router.post('/addCleaningService', async (req, res) => {
   try {
-    const { name, availability, price, location, description } = req.body;
-    const image = req.file ? req.file.path : null; // Save the file path if uploaded
-    console.log(image)
+    const { name, availability, price, location, image, description } = req.body;
+
+    // Create a new cleaning service document
     const newCleaningService = new cleaningservices({
       name,
       availability,
@@ -44,7 +23,10 @@ router.post('/addCleaningService', upload.single('image'), async (req, res) => {
       description
     });
 
+    // Save the cleaning service to the database
     const savedCleaningService = await newCleaningService.save();
+
+    // Respond with the saved cleaning service
     res.json(savedCleaningService);
   } catch (error) {
     console.error(error);

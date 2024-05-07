@@ -9,6 +9,7 @@ app.use(cors({
     credentials: true
 }));
 app.use(express.json());
+app.use('/uploads', express.static('uploads'));
 const dbConfig = require('./db')
 
 const cleaningServiceRoutes = require('./routes/cleaningserviceroute');
