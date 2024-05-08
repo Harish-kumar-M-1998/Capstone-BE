@@ -58,6 +58,46 @@ router.get('/getCleaningServiceById/:serviceid', async (req, res) => {
            res.status(500).json({ error: 'Internal server error' }); // Handle errors
          });
      });
-     
+
+     router.delete('/:id', async (req, res) => {
+      try {
+        const service = await cleaningservices.findById(req.params.id);
+        if (service == null) {
+          return res.status(404).json({ message: 'Service not found' });
+        }
+        await cleaningservices.findByIdAndDelete(req.params.id); // Corrected line
+        res.json({ message: 'Service deleted' });
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
+    });
+
+    router.put('/:id', async (req, res) => {
+      try {
+        const service = await cleaningservices.findById(req.params.id);
+        if (!service) {
+          return res.status(404).json({ error: 'Service not found' });
+        }
+    
+        // Update service fields based on request body
+        if (req.body.name) {
+          service.name = req.body.name;
+        }
+        if (req.body.description) {
+          service.description = req.body.description;
+        }
+        if (req.body.price) {
+          service.price = req.body.price;
+        }
+    
+        // Validate and save the updated service
+        const updatedService = await service.save();
+        res.json({ message: 'Service updated successfully', service: updatedService });
+      } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    });
+    
 
 module.exports = router;
