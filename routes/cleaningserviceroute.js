@@ -4,12 +4,12 @@ const multer = require('multer');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const cleaningservices = require('../models/cleaningservicelist');
-
+const verifyToken = require('../middleware/index');
 const fs = require('fs');
 
 
 
-router.post('/addCleaningService', async (req, res) => {
+router.post('/addCleaningService', verifyToken,async (req, res) => {
   try {
     const { name, availability, price, location, image, description } = req.body;
 
@@ -34,7 +34,7 @@ router.post('/addCleaningService', async (req, res) => {
   }
 });
 // Route to get all cleaning services
-router.get('/getAllCleaningServices', async (req, res) => {
+router.get('/getAllCleaningServices',verifyToken, async (req, res) => {
     
   cleaningservices.find()
        .then (cleaningservices => res.json(cleaningservices))
@@ -59,7 +59,7 @@ router.get('/getCleaningServiceById/:serviceid', async (req, res) => {
          });
      });
 
-     router.delete('/:id', async (req, res) => {
+     router.delete('/:id',verifyToken, async (req, res) => {
       try {
         const service = await cleaningservices.findById(req.params.id);
         if (service == null) {
@@ -72,7 +72,7 @@ router.get('/getCleaningServiceById/:serviceid', async (req, res) => {
       }
     });
 
-    router.put('/:id', async (req, res) => {
+    router.put('/:id',verifyToken, async (req, res) => {
       try {
         const service = await cleaningservices.findById(req.params.id);
         if (!service) {

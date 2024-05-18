@@ -4,8 +4,8 @@ const { v4: uuidv4 } = require('uuid');
 const stripe = require('stripe')('sk_test_51PDekiSGfzm40G055NL7Jb84b6YnfiYhI1OOFXGHOERX7lEkgEprTzxX4OW4J9D7fkN0RNykkucCYoeE4PIMMnkw00kBDaN4qB');
 const Booking = require('../models/booking');
 const CleaningService = require('../models/cleaningservicelist');
-
-router.post('/bookings', async (req, res) => {
+const verifyToken = require('../middleware/index');
+router.post('/bookings', verifyToken, async (req, res) => {
     try {
         const {
             username,
@@ -60,7 +60,7 @@ router.post('/bookings', async (req, res) => {
     }
 });
 
-router.get('/bookings', async (req, res) => {
+router.get('/bookings', verifyToken, async (req, res) => {
     try {
         const bookings = await Booking.find();
         res.json(bookings);
@@ -91,7 +91,7 @@ router.post('/username', async (req, res) => {
     }
 });
 
-router.delete('/:bookingId', async (req, res) => {
+router.delete('/:bookingId', verifyToken, async (req, res) => {
     try {
       const bookingId = req.params.bookingId;
       // Delete booking from the database

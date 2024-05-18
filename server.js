@@ -17,7 +17,7 @@ const userdataroutes = require ('./routes/userdataroute')
 const quoteroute =require('./routes/quote')
 const ratingroute =require('./routes/rating&review')
 const bookingroute = require('./routes/bookinroutes')
-
+const middleware = require('./routes/pro')
 
 
 app.use('/api/cleaningservices', cleaningServiceRoutes);
@@ -26,7 +26,7 @@ app.use('/api/userdata', userdataroutes)
 app.use('/api/quote',quoteroute)
 app.use('/api/rating',ratingroute)
 app.use('/api/bookings',bookingroute)
-
+app.use('/api',middleware)
 
 app.get('/', (req, res) => {
     const htmlResponse = `

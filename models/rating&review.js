@@ -8,7 +8,7 @@ const ratingReviewSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    required: true
+    
   },
   service: {
     type: String,

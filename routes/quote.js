@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const QuoteRequest = require('../models/quote');
+const verifyToken = require('../middleware');
 
 // Route to create a new quote request
-router.post('/quote', async (req, res) => {
+router.post('/quote',verifyToken, async (req, res) => {
   try {
     const quoteRequest = new QuoteRequest(req.body);
     await quoteRequest.save();
@@ -14,7 +15,7 @@ router.post('/quote', async (req, res) => {
 });
 
 // Route to get all quote requests
-router.get('/quote', async (req, res) => {
+router.get('/quote',verifyToken, async (req, res) => {
   try {
     const quoteRequests = await QuoteRequest.find();
     res.send(quoteRequests);

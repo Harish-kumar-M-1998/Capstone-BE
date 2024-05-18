@@ -1,11 +1,11 @@
 // routes/ratingReview.js
 
-const express = require('express');
+const express = require ('express');
 const router = express.Router();
 const RatingReview = require('../models/rating&review');
-
+const verifyToken = require('../middleware/index');
 // Route to submit a new rating and review
-router.post('/rating', async (req, res) => {
+router.post('/rating',verifyToken, async (req, res) => {
   try {
     const { name, email, service, starRating, review, improvements } = req.body;
 
@@ -30,7 +30,7 @@ router.post('/rating', async (req, res) => {
 });
 
 // Route to fetch all rating and reviews
-router.get('/all', async (req, res) => {
+router.get('/all',verifyToken, async (req, res) => {
   try {
     // Fetch all rating and reviews from the database
     const ratingReviews = await RatingReview.find();
